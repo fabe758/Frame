@@ -14,18 +14,31 @@
 #include "Motion.h"
 // #include <ctime>
 
+/// @brief Struct for light curve analysis
 template <typename Type> struct LcParam {
+  /// @brief Record parameters for debugging if record is true
   bool record = false;
+  /// @brief Recorded parameter : size of in queue
   std::vector<std::vector<int>> in_size;
+  /// @brief Recorded parameter : size of uncertain queue
   std::vector<std::vector<int>> unc_size;
+  /// @brief Recorded parameter : size of out queue
   std::vector<std::vector<int>> out_size;
+  /// @brief Recorded parameter : total area of in queue
   std::vector<std::vector<Type>> in_area;
+  /// @brief Recorded parameter : total area of uncertain queue
   std::vector<std::vector<Type>> unc_area;
+  /// @brief Recorded parameter : sensible number of total area
   std::vector<std::vector<Type>> area_sn;
+  /// @brief Recorded parameter : total number of round
   std::vector<std::vector<int>> round;
+  /// @brief Start benchmark if bench = true
   bool bench = false;
+  /// @brief Start time of the benchmark in clock
   long start;
+  /// @brief End time of the benchmark in clock
   long stop;
+  /// @brief Returns LcParam<float>
   LcParam<float> to_f() const {
     LcParam<float> prm;
     prm.record = this->record;
@@ -55,6 +68,7 @@ template <typename Type> struct LcParam {
     // prm.area_sn = as;
     return prm;
   }
+  /// @brief Returns LcParam<double>
   LcParam<double> to_d() const {
     LcParam<double> prm;
     prm.record = this->record;
@@ -82,6 +96,7 @@ template <typename Type> struct LcParam {
     // prm.area_sn = as;
     return prm;
   }
+  /// @brief Returns LcParam<long double>
   LcParam<long double> to_l() const {
     LcParam<long double> prm;
     prm.record = this->record;
@@ -133,14 +148,15 @@ private:
   std::vector<Time<Type>> c_t;
   /// @brief A series of magnification
   std::vector<std::vector<Type>> c_mag;
-  std::vector<std::vector<Type>> c_mag2;
+  // std::vector<std::vector<Type>> c_mag2;
   /// @brief A series of astrometric shift
   std::vector<V2d<Type>> c_as;
-  std::vector<V2d<Type>> c_as2;
+  // std::vector<V2d<Type>> c_as2;
   /// @brief Fractal parameters
-  std::vector<std::vector<FrTri<Type>>> c_frtri;
+  // std::vector<std::vector<FrTri<Type>>> c_frtri;
   /// @brief Analysis parameters
   FrParam<Type> c_param;
+  /// @brief Light curve parameters
   LcParam<Type> c_lcp;
 
 public:
@@ -196,7 +212,9 @@ public:
     // c_frtri.clear();
     // c_srcm.clear();
   };
+  /// @brief Set record : Record parameters if record = true
   void set_record(bool record) { c_lcp.record = record; };
+  /// @brief Set bench : Mkae benchmark if bench = true
   void set_bench(bool bench) { c_lcp.bench = bench; };
   /// @brief Return the series of time
   /// @return std::vector<Time<Type>> time() : the series of time
@@ -207,36 +225,34 @@ public:
   /// @brief Return multiple lens motion
   /// @return MlMotion<Type> mlm() : multiple lens motion
   MlMotion<Type> mlm() const { return c_mlm; };
-  std::vector<std::vector<FrTri<Type>>> frtri() const { return c_frtri; };
+  // std::vector<std::vector<FrTri<Type>>> frtri() const { return c_frtri; };
+  /// @brief Returns Source<Type> at t[it]
   Source<Type> src(int it) const;
+  /// @brief Returns Source<Type> at t
   Source<Type> src(Time<Type> t) const;
+  /// pbrief Returns Mlens<Type> at t[it]
   Mlens<Type> ml(int it) const;
+  /// pbrief Returns Mlens<Type> at t
   Mlens<Type> ml(Time<Type> t) const;
+  /// @brief Returns FrTri<Type> at t[it]
   FrTri<Type> frtri(int it) const;
+  /// @brief Returns FrTri<Type> at t
   FrTri<Type> frtri(Time<Type> t) const;
-  /// @brief Clculate for srcm[is] and t[it] for np times and return result
-  /// @param[in] is : index of source
-  /// @param[in] it : index of time
-  /// @param[in] round : number of round of calculation
-  /// @return FrTri<Type> calc(int is, int it, int np) : result
-  FrTri<Type> calc(int is, int it, int round) {
-    FrTri<Type> frtri(c_mlm.ml(c_t[it]), c_srcm[is].src(c_t[it]), c_param);
-    frtri.process(round);
-    return frtri;
-  };
   /// @brief Clculate
   /// @param[in] round : number of round of calculation
-  void process(int round);
+  // void process(int round);
+  /// @brief Process divide/select while size of in queue < in_size
+  /// @param[in] in_size : size of "in" queue to stop
   void process_while(int in_size);
+  /// @brief Process divide/select while ratio of uncertain and in area <
+  /// ratio_unc_in
   void process_while(Type ratio_unc_in);
-  void process_while2(int in_size);
-  void process_while2(Type ratio_unc_in);
-  std::vector<std::vector<Type>> mags2() const;
-  std::vector<Type> mag2() const;
-  std::vector<V2d<Type>> as2() const;
+  // std::vector<Type> mag() const;
+  // std::vector<V2d<Type>> as() const;
   /// @brief Return magnifications
   /// @return std::vector<std::vector<Type>> mag() : series of magnifications
   std::vector<std::vector<Type>> mags() const;
+  /// @brief Returns array of magnifications
   std::vector<Type> mag() const;
   /// @brief Return astrometric shifts
   /// @return std::vector<V2d<Type>> as() : series of astrometric shifts
@@ -261,18 +277,15 @@ public:
     c_mlm.clear();
     c_t.clear();
     c_as.clear();
-    c_as2.clear();
+    // c_as2.clear();
     for (size_t is = 0; is < c_srcm.size(); is++) {
       c_mag[is].clear();
-      c_mag2[is].clear();
-      c_frtri[is].clear();
+      // c_mag2[is].clear();
     }
     c_mag.clear();
-    c_frtri.clear();
     c_srcm.clear();
     c_mag.clear();
-    c_mag2.clear();
-    c_frtri.clear();
+    // c_mag2.clear();
     c_srcm.clear();
   };
   FrParam<Type> param() const { return c_param; };

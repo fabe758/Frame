@@ -200,19 +200,23 @@ public:
   RA(Type hh, Type mm, Type ss)
       : Angle<Type>(M_PI / 12.0 * (hh + mm / 60.0 + ss / 60.0 / 60.0)) {};
   /// @brief Returns hh
+  /// @return Type hh() : hour
   Type hh() const { return std::floor(this->c_rad / M_PI * 12.0); };
   /// @brief Returns mm
+  /// @return Type mm() : minutes
   Type mm() const {
     return static_cast<Type>(
         static_cast<int>(this->c_rad / M_PI * 12.0 * 60.0) % 60);
   };
   /// @brief Returns ss
+  /// @return Type ss() : second
   Type ss() const {
     return 12.0 * 60.0 * 60.0 / M_PI *
            (this->c_rad - M_PI / 12.0 * this->hh() -
             M_PI / 12.0 / 60.0 * this->mm());
   };
   /// @brief Returns RA by string
+  /// @return std::string ra() : right ascension
   std::string ra() const {
     std::ostringstream ss;
     ss << this->hh();
@@ -221,14 +225,17 @@ public:
     return ss.str();
   };
   /// @brief Returns RA<float>
+  /// @brief RA<float> to_f() : RA<float>
   RA<float> to_f() const {
     return RA<float>(Angle<float>(static_cast<float>(this->c_rad)));
   };
   /// @brief Returns RA<double>
+  /// @return RA<double> to_d() : RA(double)
   RA<double> to_d() const {
     return RA<double>(Angle<double>(static_cast<double>(this->c_rad)));
   };
   /// @brief Returns RA<long double>
+  /// @return RA<long double> : RA<long double>
   RA<long double> to_l() const {
     return RA<long double>(
         Angle<long double>(static_cast<long double>(this->c_rad)));
@@ -264,18 +271,21 @@ public:
       this->c_rad = M_PI / 180.0 * (dd - mm / 60.0 - ss / 60.0 / 60.0);
   };
   /// @brief Returns dd
+  /// @return Type dd() : degree
   Type dd() const {
     if (this->c_rad >= 0.0)
       return std::floor(this->c_rad / M_PI * 180.0);
     return std::ceil(this->c_rad / M_PI * 180.0);
   };
   /// @brief Returns mm
+  /// @return Type mm() : minutes
   Type mm() const {
     if (this->c_rad >= 0.0)
       return std::floor((Angle<Type>::deg() - this->dd()) * 60.0);
     return std::abs(std::ceil((Angle<Type>::deg() - this->dd()) * 60.0));
   };
   /// @brief Returns ss
+  /// @return Type ss() : seconds
   Type ss() const {
     if (this->c_rad >= 0.0)
       return ((Angle<Type>::deg() - this->dd()) * 60.0 - this->mm()) * 60.0;
@@ -283,6 +293,7 @@ public:
                     60.0);
   };
   /// @brief Returns declination by string
+  /// @return std::string dec() : declination
   std::string dec() const {
     std::ostringstream ss;
     ss << this->dd();
@@ -291,14 +302,17 @@ public:
     return ss.str();
   };
   /// @brief Returns Dec<float>
+  /// @return Dec<float> to_f() : Dec<float>
   Dec<float> to_f() const {
     return Dec<float>(Angle<float>(static_cast<float>(this->c_rad)));
   };
   /// @brief Returns Dec<double>
+  /// @return Dec<double> to_d() : Dec<double>
   Dec<double> to_d() const {
     return Dec<double>(Angle<double>(static_cast<double>(this->c_rad)));
   }
   /// @brief Returns Dec<long double>
+  /// @return Dec<long double> to_l() : Dec<long double>
   Dec<long double> to_l() const {
     return Dec<long double>(
         Angle<long double>(static_cast<long double>(this->c_rad)));
@@ -352,26 +366,31 @@ public:
     }
   };
   /// @brief Returns dd
+  /// @return Type dd() : degrees
   Type dd() const {
     if (Angle<Type>::c_rad >= 0.0)
       return std::floor(this->deg());
     return std::ceil(this->deg());
   };
   /// @brief Returns mm
+  /// @return Type mm() : minutes
   Type mm() const {
     return std::floor(std::abs(this->deg() - this->dd()) * 60.0);
   };
   /// @brief Returns ss
+  /// @return Type ss() : seconds
   Type ss() const {
     return (std::abs(this->deg() - this->dd()) * 60.0 - this->mm()) * 60.0;
   };
   /// @brief Returns ew
+  /// @return char ew() : 'E' for East, 'W' for West
   char ew() const {
     if (Angle<Type>::c_rad >= 0.0)
       return 'E';
     return 'W';
   };
   /// @brief Returns longitude by string
+  /// @return std::string longitude() : longitude
   std::string longitude() const {
     std::ostringstream ss;
     if (this->dd() >= 0.0)
@@ -447,18 +466,21 @@ public:
       Angle<Type>::from_deg(dd - mm / 60.0 - ss / 60.0 / 60.0);
   }
   /// @brief Return : Type dd
+  /// @return Type dd() : degrees
   Type dd() const {
     if (Angle<Type>::c_rad >= 0.0)
       return std::floor(Angle<Type>::deg());
     return -std::ceil(Angle<Type>::deg());
   };
   /// @brief Return : Type mm
+  /// @return Type mm() : minutes
   Type mm() const {
     if (Angle<Type>::c_rad >= 0.0)
       return std::floor(std::abs(Angle<Type>::deg() - this->dd()) * 60.0);
     return std::floor(std::abs(Angle<Type>::deg() + this->dd()) * 60.0);
   };
   /// @brief Return : Type ss
+  /// @return ss() : seconds
   Type ss() const {
     if (Angle<Type>::c_rad >= 0.0)
       return std::abs(Angle<Type>::deg() - this->dd()) * 60.0 * 60.0 -
@@ -473,6 +495,7 @@ public:
     return 'S';
   };
   /// @brief Return : string latitude
+  /// @return std::string latitude() : latitude
   std::string latitude() const {
     std::ostringstream ss;
     if (this->dd() >= 0.0)
@@ -485,16 +508,19 @@ public:
     return ss.str();
   };
   /// @brief Return : Latitude<float>
+  /// @return Latitude<float> to_f() : Latitude<float>
   Latitude<float> to_f() const {
     return Latitude<float>(
         Angle<float>(static_cast<float>(Angle<Type>::c_rad)));
   };
   /// @brief Return : Latitude<double>
+  /// @return Latitude<double> to_d() : Latitude<double>
   Latitude<double> to_d() const {
     return Latitude<double>(
         Angle<double>(static_cast<double>(Angle<Type>::c_rad)));
   };
   /// @brief Return : Latitude<long double>
+  /// @return Latitude<long double> to_l() : Latitude<long double>
   Latitude<long double> to_l() const {
     return Latitude<long double>(
         Angle<long double>(static_cast<long double>(Angle<Type>::c_rad)));
@@ -524,38 +550,89 @@ public:
   /// @brief Constructor specifying x and y
   /// @param[in] x : x component
   /// @param[in] y : y component
-  V2d(Type x, Type y) : c_x(x), c_y(y) {}; // Initialize x and y
-  Type x() const;                          // Access to x component (read only)
-  Type y() const;                          // Access to y component (read only)
-  Type norm() const;                       // Norm
-  Type n2() const;                         // Square of norm
+  V2d(Type x, Type y) : c_x(x), c_y(y) {};
+  /// brief Returns x component
+  /// Type x() : x component
+  Type x() const;
+  /// @brief Returns y component
+  /// @return Type y() : y component
+  Type y() const;
+  /// Returns norm
+  /// @return Type norm() : norm
+  Type norm() const;
+  /// @brief Returns square of norm
+  /// @return Type n2() : square of norm
+  Type n2() const;
+  /// @brief Returns unit vector with the same direction
+  /// @return V2d<Type> unit() : unit vector
   V2d<Type> unit() const;
+  /// @brief Returns this point is on the same line of v1 and v2
+  /// @param[in] v1 : a vector
+  /// @raram[in] v2 : another vector
+  /// @return bool online() : true if on line, false if not
   bool online(V2d<Type> v1, V2d<Type> v2);
+  /// @brief Returns whether this point is between v1 and v2 or not
+  /// @param[in] v1 : a vector
+  /// @raram[in] v2 : another vector
+  /// @return bool between() : true if this point is between v1 and v2, false if
+  /// not
   bool between(V2d<Type> v1, V2d<Type> v2);
-  V2d<Type> operator+(V2d<Type> vv) const; // Add
-  V2d<Type> operator-(V2d<Type> vv) const; // Subtract
-  Type operator*(V2d<Type> vv) const;      // Scalar product
-  V2d<Type> operator*(Type dd) const;      // Multiply by a constant
-  V2d<Type> operator*(M2d<Type> mm) const; // Multiply by a matrix
-  V2d<Type> operator/(Type dd) const;      // Devide by a constant
-  void operator+=(V2d<Type> vv);           // Accumulate
-  void operator-=(V2d<Type> vv);           // Negative accumulate
-  bool operator==(V2d<Type> vv) const;     // Equal?
-  V2d<Type> operator^(Type ph) const;      // Rotate
-                                           /**
-                                            * operator V2d<Type>::operator^(Angle<Type> ph)
-                                            * @brief returns the vector rotated by an angle ph
-                                            * @return V2d<Type> : vector rotated by ph
-                                            *
-                                            */
-  V2d<Type> operator^(Angle<Type> ph) const {
-    return *this ^ ph.rad();
-  }; // Rotate
-  Type operator%(V2d<Type> vv) const; // Vector product
-  V2d<float> to_f() const;            // Convert to float
-  V2d<double> to_d() const;           // Convert to double
-  V2d<long double> to_l() const;      // Convert to long double
-  void print() const;                 // Print parameters
+  /// @brief Returns added vector of this vector and vv
+  /// @param[in] vv : a vector
+  /// @return V2d<Type> : added vector
+  V2d<Type> operator+(V2d<Type> vv) const;
+  /// @brief Returns subtracted vector by vv
+  /// @param[in] vv : a vector
+  /// @return V2d<Type> : subtracted vector by vv
+  V2d<Type> operator-(V2d<Type> vv) const;
+  /// @brief Returns inner product with vv
+  /// @param[in] vv : a vector
+  /// @return Type : inner product with vv
+  Type operator*(V2d<Type> vv) const;
+  /// @brief Returns the vector multiplied by a number dd
+  /// @param[in] dd : a number
+  /// @return V2d<Type> : the vector multiplied by dd
+  V2d<Type> operator*(Type dd) const;
+  /// @brief Returns the vector multiplied by a 2d matrix mm
+  /// @param mm : a 2d matrix
+  /// @return V2d<Type> : the vector multiplied by 2d matrix mm
+  V2d<Type> operator*(M2d<Type> mm) const;
+  /// @brief Returns a vector divided by a number dd
+  /// @param[in] dd : a number
+  /// @return V2d<Type> : the vector divided by a number dd
+  V2d<Type> operator/(Type dd) const;
+  /// @brief Accumulates a vector vv
+  /// @param[in] vv : a vector
+  void operator+=(V2d<Type> vv);
+  /// @brief deaccumulates a vector vv
+  /// @param[in] vv : a vector
+  void operator-=(V2d<Type> vv);
+  /// @brief returns this vector is equal to the vector vv or not
+  /// @param[in] vv : a vector
+  /// @return bool : true if vv and this vector is equal, false if not
+  bool operator==(V2d<Type> vv) const;
+  /// @brief returns rotated vector by the angle ph
+  /// @param[in] ph : rotation angle in radian
+  /// @return V2d<Type> : rotated vector
+  V2d<Type> operator^(Type ph) const;
+  /// @brief returns rotated vector by the angle ph
+  /// @param[in] ph : rotation angle in Angle<Type>
+  /// @return V2d<Type> : rotated vector
+  V2d<Type> operator^(Angle<Type> ph) const { return *this ^ ph.rad(); };
+  /// @brief Returns z component of the vector product with vv
+  /// @return Type : z component of the vector product
+  Type operator%(V2d<Type> vv) const;
+  /// @brief Returns converted vector to float
+  /// @return V2d<float> to_f() : V2d<float>
+  V2d<float> to_f() const;
+  /// @brief Returns converted vector to double
+  /// @return V2d<double> to_d() : V2d<double>
+  V2d<double> to_d() const;
+  /// @brief Returns converted vector to long double
+  /// @return V2d<long double> to_l() : V2d<long double>
+  V2d<long double> to_l() const;
+  /// @brief Print parameters
+  void print() const;
 };
 
 /// @brief Global const V2d_0<Type> : all parameters are zero
@@ -582,17 +659,49 @@ public:
   /// @brief Comstructor to initialize
   /// @param[in] ends  : teo ends
   Seg2d(std::array<V2d<Type>, 2> ends) : c_ends(ends) {};
+  /// @brief Returns ends
+  /// @return std::array<V2d<Type>, 2> ends() : ends
   std::array<V2d<Type>, 2> ends() const;
+  /// @brief returns wheter point p is on the segment or not
+  /// @param[in] p : a point
+  /// @return bool on() : true if p is on the segment, false if not
   bool on(V2d<Type> p) const;
+  /// @brief Returns the length of the segment
+  /// @return Type length() : length
   Type length() const;
+  /// method Type Seg2d<Type>::alpha(V2d<Type> p)
+  /// @brief returns the length between end[0] and foot point of point p
+  /// @param[in] p : a point on the plane
+  /// @return Type Seg2d<Type>::alpha(V2d<Type> p) : the length between the
+  /// end[0] and foot point of point p
   Type alpha(V2d<Type> p) const;
+  /// @brief returns the foot point of the point p
+  /// @param[in] p : a point on the plane
+  /// @return V2d<Type> Seg2d<Type>::foot() : the foot point
   V2d<Type> foot(V2d<Type> p) const;
+  /// @brief returns the closest point on the segment to the point p
+  /// @param[in] p : a point on the plane
+  /// @return V2d<Type> Seg2d<Type>::foot() : the foot point
   V2d<Type> closest(V2d<Type> p) const;
+  /// @brief returns the closest point on the segment to the point p
+  /// @param[in] p : a point on the plane
+  /// @return Type Seg2d<Type>::distance() : the distance of the point p
   Type distance(V2d<Type> p) const;
+  /// @brief returns the opening angle of the segment seen from the point p
+  /// @param[in] p : a point on the plane
+  /// @return Type Seg2d<Type>::angle() : the opening angle
   Type angle(V2d<Type> p) const;
+  /// @brief returns converted segment to Seg2d<float> (32-bit floating point)
+  /// @return Seg2d<float> : converted segment to Seg2d<float>
   Seg2d<float> to_f() const;
+  /// @brief returns converted segment to Seg2d<double> (64-bit floating point)
+  /// @return Seg2d<double> : converted segment to Seg2d<double>
   Seg2d<double> to_d() const;
+  /// @brief returns converted segment to Seg2d<long double> (128-bit floating
+  /// point)
+  /// @return Seg2d<long double> : converted segment to Seg2d<long double>
   Seg2d<long double> to_l() const;
+  ///  @brief prints end points
   void print();
 };
 
@@ -622,24 +731,65 @@ public:
   /// @param[in] yy : yy component
   M2d(Type xx, Type xy, Type yx, Type yy)
       : c_xx(xx), c_xy(xy), c_yx(yx), c_yy(yy) {};
-  Type xx() const;                         // Access to xx (read only)
-  Type xy() const;                         // Access to xy (read only)
-  Type yx() const;                         // Access to yx (read only)
-  Type yy() const;                         // Access to yy (read only)
-  M2d<Type> operator+(M2d<Type> mm) const; // Add
-  M2d<Type> operator-(M2d<Type> mm) const; // Subtract
-  M2d<Type> operator*(M2d<Type> mm) const; // Multiply by a matrix
-  V2d<Type> operator*(V2d<Type> vv) const; // Multiply by a vector
-  M2d<Type> operator*(Type ss) const;      // Multiply by a scalar
-  M2d<Type> operator!() const;             // Transpose
-  void operator+=(M2d<Type> mm);           // Accumulate
-  Type det() const;                        // Determinant
-  M2d<Type> inv() const;                   // Inverse
-  std::array<Type, 2> lambda() const;      // Eigen values
-  M2d<float> to_f() const;                 // Convert to float
-  M2d<double> to_d() const;                // Convert to double
-  M2d<long double> to_l() const;           // Convert to long double
-  void print() const;                      // Print
+  /// @brief Returns xx component
+  /// @return Type : xx component
+  Type xx() const;
+  /// @brief Returns xy component
+  /// @return Type : xy component
+  Type xy() const;
+  /// @brief Returns yx component
+  /// @return Type : yx component
+  Type yx() const;
+  /// @brief Returns yy component
+  /// @return Type : yy component
+  Type yy() const;
+  /// @brief Returns the matrix added by mm
+  /// @param[in] mm : a matrix to add
+  /// @return M2d<Type> : matrix added by mm
+  M2d<Type> operator+(M2d<Type> mm) const;
+  /// @brief Returns the matrix subtracted by mm
+  /// @param[in] mm : a matrix to subtract
+  /// @return M2d<Type> : matrix subtracted by mm
+  M2d<Type> operator-(M2d<Type> mm) const;
+  /// @brief Returns the matrix mutiplied by mm
+  /// @param[in] mm : a matrix to multiply
+  /// @return M2d<Type> : matrix multiplied by mm
+  M2d<Type> operator*(M2d<Type> mm) const;
+  /// @brief Returns the mutiplied matrix by a vector vv
+  /// @param[in] vv : a vector to multiply
+  /// @return V2d<Type> : multiplied by vv
+  V2d<Type> operator*(V2d<Type> vv) const;
+  /// @brief Returns the matrix mutiplied by a number ss
+  /// param[in] ss : a number to multiply
+  /// @return V2d<Type> : the matrix multiplied by ss
+  M2d<Type> operator*(Type ss) const;
+  /// @brief Returns the transposed matrix
+  /// @return M2d<Type> : the transposed matrix
+  M2d<Type> operator!() const;
+  /// @brief Accumulates by the matrix mm
+  /// @param[in] mm : a matrix to add
+  void operator+=(M2d<Type> mm);
+  /// @brief Returns the determinant of the matrix
+  /// @return Type M2d<Type>::det() : the determinant of the matrix
+  Type det() const;
+  /// @brief Returns the inverse matrix
+  /// @return M2d<Type> M2d<Type>::inv() : the inverse matrix
+  M2d<Type> inv() const;
+  /// @brief Returns eigen values
+  /// @return std::array<Type, 2> lambda() : eigenvalues
+  std::array<Type, 2> lambda() const;
+  /// @brief Returns converted matrix to M2d<float> (32-bit floating point)
+  /// @return M2d<float> to_f() : converted matrix to M2d<float>
+  M2d<float> to_f() const;
+  /// @brief returns converted matrix to M2d<double> (64-bit floating point)
+  /// @return M2d<double> to_d() : converted matrix to M2d<double>
+  M2d<double> to_d() const;
+  /// @brief returns converted matrix to M2d<long double> (128-bit floating
+  /// point)
+  /// @return M2d<double> to_l() : converted matrix to M2d<long double>
+  M2d<long double> to_l() const;
+  /// @brief prints matrix
+  void print() const; // Print
 };
 
 /// @brief Global const M2d_0<Type> : all parameters are zero
@@ -665,42 +815,69 @@ public:
   /// @brief Constructor specifying three apexes
   /// @param[in] apex : three apexes
   Triangle(std::array<V2d<Type>, 3> apex) : c_apex(apex) {};
-  /// @brief Return center
+  /// @brief Returns center
   /// @return center
   V2d<Type> cent() const;
-  /// @brief Return apexes
+  /// @brief Returns apexes
   /// @return Apeexes
   std::array<V2d<Type>, 3> apex() const;
-  /// @brief Return smallest x and smallest y
+  /// @brief Returns smallest x and smallest y
   /// @return Smallest x and smallest y
   V2d<Type> min() const;
-  /// @brief Return greatest x and greatest y
+  /// @brief Returns greatest x and greatest y
   /// @return Greatest x and greatest y
   V2d<Type> max() const;
-  /// @Return sides
+  /// @Returns sides
   /// @return sides
   std::array<Seg2d<Type>, 3> sides() const;
-  /// @brief Return area
+  /// @brief Returns area
   /// @return area
   Type area() const;
-  /// @brief Return closest distance from the point p
+  /// @brief Returns closest distance from the point p
+  /// @param[in] p : a point on the plane
   /// @return Closest distance
   Type closestd(V2d<Type> p) const;
-  /// @brief Return if the point p is inside or outside
+  /// @brief Returns if the point p is inside or outside
   /// @param[in] p : A point
   /// @return true if p is inside, false if p is not inside
   bool in(V2d<Type> p) const;
-  /// @brief Return if the circle cl is inside or not
+  /// @brief Returns if the circle cl is inside or not
   /// @param[in] cl : a circle
   /// @return true if cl is inside, false if cl is not inside
   bool in(Circle<Type> cl) const;
+  /// @brief Returns if the circle cl is inside or not with margin
+  /// @param[in] cl : a circle
+  /// @param[in] fact : margin factor
+  /// @return true if cl is inside, false if cl is not inside
   bool in(Circle<Type> cl, Type fact) const;
+  /// @brief Returns if the Ellipse el is inside or not
+  /// @param[in] el : a ellipse
+  /// @return true if el is inside, false if el is not inside
   bool in(Ellipse<Type> el) const;
+  /// @brief Returns if the ellipse el is inside or not with margin
+  /// @param[in] el : a ellipse
+  /// @param[in] fact : margin factor
+  /// @return true if el is inside, false if el is not inside
   bool in(Ellipse<Type> el, Type fact) const;
-  bool insideof(Circle<Type> cl) const; // Is this triangle inside of th cl?
+  /// @brief Returns if the triangle is inside of the circle
+  /// @param[in] cl : a circle on the plane
+  /// @return bool insideof(Circle<Type> cl) : the triangle is inside of
+  /// the circle (true : inside, false : not inside)
+  bool insideof(Circle<Type> cl) const;
+  /// @brief Returns converted triangle to Triangle<float> (32-bit floating
+  /// point)
+  /// @return Triangle<float> to_f() : converted Triangle to Triangle<float>
   Triangle<float> to_f() const;
+  /// @brief returns converted triangle to Triangle<double> (64-bit floating
+  /// point)
+  /// @return Triangle<double> to_d() : converted Triangle to Triangle<double>
   Triangle<double> to_d() const;
+  /// @brief returns converted triangle to Triangle<long double> (128-bit
+  /// floating point)
+  /// @return Triangle<long double> to_l() : converted Triangle to Triangle<long
+  /// double>
   Triangle<long double> to_l() const;
+  /// @brief prints triangle
   void print() const;
 };
 
@@ -723,21 +900,48 @@ public:
   /// @brief Constructor to initialize
   /// @param[in] min : lower left corner
   /// @param[in] max : upper right corner
-  Rectangle(V2d<Type> min, V2d<Type> max)
-      : c_min(min), c_max(max) {}; // Initialization
-  V2d<Type> min() const;           // Upper right corner (Read only)
-  V2d<Type> max() const;           // Lower left corner (Read only)
-  V2d<Type> cent() const;          // Center (Read only)
-  Type d() const;                  // Width (Height)
-  Type area() const;               // Area
-  bool in(V2d<Type> p) const;      // Point p is in?
-  // bool in(Circle<Type> cl);                 // Circle cl is in?
-  std::array<V2d<Type>, 4> corners() const; // 4 corners
-  std::array<Seg2d<Type>, 4> segs() const;  // Line segments
-  Rectangle<float> to_f() const;            // Convert to float
-  Rectangle<double> to_d() const;           // Convert to double
-  Rectangle<long double> to_l() const;      // Convert to long double
-  void print() const;                       // Print
+  Rectangle(V2d<Type> min, V2d<Type> max) : c_min(min), c_max(max) {};
+  /// @brief Returns lower left corner
+  /// @return V2d<Type> min() : lower left corner
+  V2d<Type> min() const;
+  /// @brief Returns upper right corner
+  /// @return V2d<Type> max() : upper right corner
+  V2d<Type> max() const;
+  /// @brief Returns center of the rectangle
+  /// @return V2d<Type> cent() : center
+  V2d<Type> cent() const;
+  /// @brief Returns width
+  /// @return Type d() : width
+  Type d() const;
+  /// @brief Returns area
+  /// @return Type area() : area
+  Type area() const;
+  /// brief Returns if point p is in or not
+  /// @param[in] p : a point on the plane
+  /// @return bool in() : p is in (true : yes, false : no)
+  bool in(V2d<Type> p) const;
+  /// @brief Returns corners
+  /// @return std::array<V2d<Type>, 4> corners() : four corners
+  std::array<V2d<Type>, 4> corners() const;
+  /// @brief Returns segments
+  /// @return std::array<Seg2d<Type>, 4> segs() : four segments
+  std::array<Seg2d<Type>, 4> segs() const;
+  /// @brief returns converted rectangle to Rectangle<float> (32-bit floating
+  /// point)
+  /// @return Rectangle<float> to_f() : converted Rectangle to Rectangle<float>
+  Rectangle<float> to_f() const;
+  /// @brief returns converted rectangle to Rectangle<double> (64-bit floating
+  /// point)
+  /// @return Rectangle<double> to_d() : converted Rectangle to
+  /// Rectangle<double>
+  Rectangle<double> to_d() const;
+  /// @brief returns converted rectangle to Rectangle<long double> (128-bit
+  /// floating point)
+  /// @return Rectangle<long double> to_l() : converted Rectangle to
+  /// Rectangle<long double>
+  Rectangle<long double> to_l() const;
+  /// @brief prints rectangle
+  void print() const;
 };
 
 /// @brief Global const Rectangle_0<Type> : all parameters are zero
@@ -766,9 +970,19 @@ public:
   Square(V2d<Type> cent, Type d)
       : Rectangle<Type>(cent - V2d<Type>(d, d), cent + V2d<Type>(d, d)),
         c_cent(cent), c_d(d) {};
+  /// @brief Returns center of the square
+  /// @return V2d<Type> cent() : center of the square
   V2d<Type> cent() const;
+  /// @brief Returns the half length of the segments
+  /// @return Type d() : the half length of the segments
   Type d() const;
+  /// @brief Returns the expanded square by a factor of fact
+  /// @return Square<Type> enlarge(Type fact) : the expanded square by a factor
+  /// of fact
   Square<Type> enlarge(Type fact) const;
+  /// @brief Returns the pair of the splitted triangles
+  /// @return std::array<Triangle<Type>, 2> to_tri() : the pair of the splitted
+  /// triangles
   std::array<Triangle<Type>, 2> to_tri() const;
 };
 
@@ -822,27 +1036,89 @@ public:
   /// @param[in] cl : circle parameters
   /// @param[in] cent : center of the circle
   Circle(Circle<Type> cl, V2d<Type> cent) : c_cent(cent) { c_r = cl.r(); };
+  /// @brief Returns center of the square
+  /// @return V2d<Type> cent() : center of the square
   V2d<Type> cent() const;
+  /// @brief Returns radious
+  /// @return Type r() : radious of the circle
   Type r() const;
+  /// @brief Returns distance from the center of the circle to the point p
+  /// @param[in] p : a point
+  /// @return Type rho() : distance from the center
   Type rho(V2d<Type> p) const;
+  /// @brief Returns area of the circle
+  /// @return Type area() : Area of the circle
   Type area() const;
+  /// @brief Returns whether point p is inside of the circle or not
+  /// @param[in] p : a point
+  /// @return bool in() : true if p is inside, false if not
   bool in(V2d<Type> p) const;
-  // bool in(Rectangle<Type> rec);
+  /// @brief Returns the ratio a to get the cross point
+  /// @param[in] seg : a segment
+  /// @return Type cross_a() : Returns the ratio a to get the cross point
   Type cross_a(Seg2d<Type> seg) const;
+  /// @brief Returns the cross point of the segment
+  /// @param[in] seg : a segment
+  /// @return V2d<Type> Circle<Type>::cross() : Cross point
   V2d<Type> cross(Seg2d<Type> seg) const;
+  /// @brief Returns "in" and "out" apexes
+  /// @param[in] tri : a triangle
+  /// @return TriInOut<Type> Circle<Type>::inout() : "in" and "out" apexes
   TriInOut<Type> inout(Triangle<Type> tri) const;
+  /// @brief Returns the area of the crescent defined by th
+  /// @param[in] th : angle of the sector
+  /// @return Type Circle<Type>::area_th() : Area of the crescent
   Type area_th(Type th) const;
+  /// @brief Returns the areas of "in", "out", "crescent" regions
+  /// @param[in] tri : a triangle
+  /// @return AreaTri<Type> Circle<Type>::areatri() : the areas of "in", "out",
+  /// "crescent" regions
   AreaTri<Type> areatri(Triangle<Type> tri) const;
+  /// @brief Returns the ratio of the "in" area and all area of the triangle
+  /// @param[in] tri : a triangle
+  /// @return Type Circle<Type>::ratio_ia() : the ratio of the "in" area and all
+  /// area of the triangle
   Type ratio_ia(Triangle<Type> tri) const;
+  /// @brief Returns the thickness of te swell defined by th
+  /// @param[in] th : opening angle of the swell
+  /// @return Type Circle<Type>::swell() : the thickness of te swell
   Type swell(Type th) const;
+  /// @brief Returns the thickness of te swell defined by the segment
+  /// @param[in] seg : a segment
+  /// @return Type Circle<Type>::swell() : the thickness of te swell
   Type swell(Seg2d<Type> seg) const;
+  /// @brief Returns the thickness of te swell defined by the triangle
+  /// @param[in] tri : a triangle
+  /// @return Type Circle<Type>::swell() : the thickness of te swell
   Type swell(Triangle<Type> tri) const;
+  /// @brief Returns the opening angle of the triangle
+  /// @param[in] tri : a triangle
+  /// @return Type Circle<Type>::angle() : the opening angle of the triangle
   Type angle(Triangle<Type> tri) const;
+  /// @brief Returns the gap between the sides of the triangle and the circl
+  /// @param[in] tri : a triangle
+  /// @return Type Circle<Type>::gap() :
   Type gap(Triangle<Type> tri) const;
+  /// @brief Returns the smallest square that include the circle
+  /// @return Square<Type> Circle<Type>::include() : the smallest square that
+  /// include the circle
   Square<Type> include() const;
+  /// @brief returns the converted circle to Circle<float> (32-bit floating
+  /// point)
+  /// @return Circle<float> Circle<Type>::to_f() : the converted circle to
+  /// Circle<float> (32-bit floating point)
   Circle<float> to_f() const;
+  /// @brief returns the converted circle to Circle<double> (64-bit floating
+  /// point)
+  /// @return Circle<double> Circle<Type>::to_d() : the converted circle to
+  /// Circle<double> (64-bit floating point)
   Circle<double> to_d() const;
+  /// @brief returns the converted circle to Circle<long double> (128-bit
+  /// floating point)
+  /// @return Circle<long double> Circle<Type>::to_l() : the converted circle to
+  /// Circle<double> (128-bit floating point)
   Circle<long double> to_l() const;
+  /// @brief prints circle
   void print() const; // Print
 };
 
@@ -883,24 +1159,79 @@ public:
   /// @brief Constructor with shift center and rotate
   Ellipse(Ellipse<Type> el, V2d<Type> cent, Type ph)
       : c_cent(cent), c_ab(el.ab()), c_ph(ph) {};
+  /// @brief Returns the center of the ellipse
+  /// @return V2d<Type> Ellipse<Type>::cent() : Center
   V2d<Type> cent() const;
-  V2d<Type> ab() const;      // Semi-major and -minor axes
-  Type ph() const;           // Inclination (Read only)
-  Type r(V2d<Type> p) const; // Radious to the direction of p
-  Type
-  rho(V2d<Type> p) const; // "Normalized" elliptical distance from the center
-  Type area() const;      // Area
-  Type dist(V2d<Type> p) const; // (Elliptical) distance from center
-  bool in(V2d<Type> p) const;   // p is in?
+  /// @brief Returns the Semi-major and semi-minor axes
+  /// @return V2d<Type> Ellipse<Type>::ab() : Semi-major and semi-minor axes
+  V2d<Type> ab() const;
+  /// @brief Returns the inclination
+  /// @return Type Ellipse<Type>::ph() : Inclination
+  Type ph() const;
+  /// @brief Returns the projected radious to the direction of the point p
+  /// @param[in] p : a point
+  /// @return Type Ellipse<Type>::r() : the projected radious to the direction
+  /// of the point p
+  Type r(V2d<Type> p) const;
+  /// @brief Returns the normalize elliptical distance to the point p
+  /// @param[in] p : a point
+  /// @return Type Ellipse<Type>::rho() : the normalized elliptical distance of
+  /// the point p
+  Type rho(V2d<Type> p) const;
+  /// @brief Returns the area of the ellipse
+  // @return Type Ellipse<Type>::area() : the area
+  Type area() const;
+  /// @brief Returns the normalize elliptical distance to the point p
+  /// @param[in] p : a point
+  /// @return Type Ellipse<Type>::dist(V2d<Type> p) : the normalized elliptical
+  /// distance of the point p
+  Type dist(V2d<Type> p) const;
+  /// @brief Returns if  the point p is inside or not inside
+  /// @param[in] p : a point
+  /// @return bool Ellipse<Type>::in() : the point p is inside or not inside
+  bool in(V2d<Type> p) const;
+  /// @brief Returns the equivalent point of p for the unit circle
+  /// @param[in] p : a point
+  /// @return V2d<Type> Ellipse<Type>::eqvCirc01() : the equivalent point
   V2d<Type> eqvCirc01(V2d<Type> p) const;
+  /// @brief Returns the equivalent segment for the unit circle
+  /// @param[in] seg : a segment
+  /// @return Seg2d<Type> Ellipse<Type>::eqvCirc01() : the equivalent segment
   Seg2d<Type> eqvCirc01(Seg2d<Type> seg) const;
+  /// @brief Returns the equivalent segment facotr (cross_a) for the unit circle
+  /// @param[in] seg : a segment
+  /// @return Type Ellipse<Type>::cross_a() : the unit circle equivalent segment
+  /// factor
   Type cross_a(Seg2d<Type> seg) const;
+  /// @brief Returns the cross point of the segment
+  /// @param[in] seg : a segment
+  /// @return V2d<Type> Ellipse<Type>::cross() : the cross point of the segment
   V2d<Type> cross(Seg2d<Type> seg) const;
+  /// @brief Returns the ratio of the "in" area and all area of the triangle
+  /// @param[in] tri : a triangle
+  /// @return Type Ellipse<Type>::ratio_ia() : the ratio of the "in" area and
+  /// all area of the triangle
   Type ratio_ia(Triangle<Type> tri) const;
+  /// @brief Returns the smallest square that include the circle
+  /// @return Square<Type> Ellipse<Type>::include() : the smallest square that
+  /// include the circle
   Square<Type> include() const;
+  /// @brief returns the converted ellipse to Ellipse<float> (32-bit floating
+  /// point)
+  /// @return Ellipse<float> Ellipse<Type>::to_f() : the converted circle to
+  /// Ellipse<float> (32-bit floating point)
   Ellipse<float> to_f() const;
+  /// @brief returns the converted ellipse to Ellipse<double> (64-bit floating
+  /// point)
+  /// @return Ellipse<double> Ellipse<Type>::to_d() : the converted ellipse to
+  /// Ellipse<double> (64-bit floating point)
   Ellipse<double> to_d() const;
+  /// @brief returns the converted ellipse to Ellipse<long double> (128-bit
+  /// floating point)
+  /// @return Ellipse<long double> Ellipse<Type>::to_l() : the converted Ellipse
+  /// to Ellipse<double> (128-bit floating point)
   Ellipse<long double> to_l() const;
+  /// @brief prints ellipse
   void print() const; // Print
 };
 
@@ -1509,6 +1840,14 @@ template <typename To, typename From> Rectangle<To> conv(Rectangle<From> p);
 template <typename To, typename From> Circle<To> conv(Circle<From> p);
 template <typename To, typename From> Ellipse<To> conv(Ellipse<From> p);
 
+/**
+ * Square<Type> include_all(std::vector<Square<Type>> sqs)
+ * @brief Return a square that include all of the squares sqs
+ * @return Square<Type> include_all() : a square that include all of the squares
+ * sqs
+ * @param[in] sqs : a set of squares
+ *
+ */
 template <typename Type>
 Square<Type> include_all(std::vector<Square<Type>> sqs);
 

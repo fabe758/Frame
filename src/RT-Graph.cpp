@@ -368,7 +368,7 @@ std::vector<TMQue<double>> RTMlens::ccca2_1(int n,
     tmq.push_back(TMQue<double>(sel2[il].sq, c_ml));
   for (size_t il = 0; il < sel2.size(); il++) {
     for (int is = 0; is < n; is++) {
-      while (tmq[il].size() < sel2[il].max)
+      while (static_cast<int>(tmq[il].size()) < sel2[il].max)
         tmq[il].split(ml);
       std::sort(tmq[il].begin(), tmq[il].end(),
                 [](auto a, auto b) { return a.mu() > b.mu(); });
@@ -904,7 +904,7 @@ void RTFrTri::process(int n) { c_frtri.process(n); }
 
 RTFTRoff RTFrTri::rtftroff(int rdmin, int rdmax) const {
   RTFTRoff roff;
-  int min = rdmin - c_frtri.param().rd_init;
+  // int min = rdmin - c_frtri.param().rd_init;
   int max = rdmax - c_frtri.param().rd_init;
   auto ftf = c_frtri.to_f();
   auto ftd = c_frtri;
@@ -928,7 +928,7 @@ RTFTRoff RTFrTri::rtftroff(int rdmin, int rdmax) const {
   std::vector<double> ardl;
   std::vector<double> snfl;
   std::vector<double> sndl;
-  for (int i = 0; i < roff.round.size(); i++) {
+  for (int i = 0; i < static_cast<int>(roff.round.size()); i++) {
     round.push_back(static_cast<double>(roff.round[i]));
     arfl.push_back(static_cast<double>(roff.area_f[i] / roff.area_l[i] - 1.0));
     sndl.push_back(static_cast<double>(roff.area_d[i] / roff.area_l[i] - 1.0));
@@ -1386,17 +1386,17 @@ TGraph RTLcurve::gml() const {
   return rtml.centers();
 };
 
-RTCCCA RTLcurve::grccca(Time<double> t, std::vector<RTCC_Sel> sel) const {
+RTCCCA RTLcurve::ccca(Time<double> t, std::vector<RTCC_Sel> sel) const {
   RTMlens rtml(this->ml(t));
   return rtml.grccca(sel);
 };
 
-RTCCCA RTLcurve::grccca(std::vector<RTCC_Sel> sel) const {
+RTCCCA RTLcurve::ccca(std::vector<RTCC_Sel> sel) const {
   RTMlens rtml(this->ml());
   return rtml.grccca(sel);
 };
 
-RTCCCA RTLcurve::grccca2() const {
+RTCCCA RTLcurve::ccca() const {
   RTMlens rtml(this->ml());
   return rtml.grccca2();
 }
@@ -1436,24 +1436,35 @@ TGraph RTLcurve::mag() const {
   return gr;
 };
 
-std::vector<TGraph> RTLcurve::mags2() const {
-  std::vector<TGraph> gmag(c_lc.mag2().size());
-  std::vector<double> t;
-  for (size_t i = 0; i < c_lc.time().size(); i++)
-    t.push_back(c_lc.time()[i].day());
-  for (size_t is = 0; is < c_lc.mag().size(); is++)
-    gmag[is] = TGraph(t.size(), t.data(), c_lc.mags2()[is].data());
-  return gmag;
-}
+// std::vector<TGraph> RTLcurve::mags() const {
+//   std::vector<TGraph> gmag(c_lc.mag().size());
+//   std::vector<double> t;
+//   for (size_t i = 0; i < c_lc.time().size(); i++)
+//     t.push_back(c_lc.time()[i].day());
+//   for (size_t is = 0; is < c_lc.mag().size(); is++)
+//     gmag[is] = TGraph(t.size(), t.data(), c_lc.mags()[is].data());
+//   return gmag;
+// }
 
-TGraph RTLcurve::mag2() const {
-  std::vector<double> t;
-  for (size_t i = 0; i < c_lc.time().size(); i++)
-    t.push_back(c_lc.time()[i].day());
-  TGraph gr(t.size(), t.data(), c_lc.mag2().data());
-  gr.SetTitle("Mganification vs. time (day)");
-  return gr;
-};
+// TGraph RTLcurve::mag() const {
+//   std::vector<double> t;
+//   for (size_t i = 0; i < c_lc.time().size(); i++)
+//     t.push_back(c_lc.time()[i].day());
+//   TGraph gr(t.size(), t.data(), c_lc.mag().data());
+//   gr.SetTitle("Mganification vs. time (day)");
+//   return gr;
+// };
+
+// TGraph RTLcurve::as() const {
+//   std::vector<double> x, y;
+//   for (auto as : c_lc.as()) {
+//     x.push_back(as.x());
+//     y.push_back(as.y());
+//   }
+//   TGraph gr(x.size(), x.data(), y.data());
+//   gr.SetTitle("Astrometric shift");
+//   return gr;
+// };
 
 TGraph RTLcurve::as() const {
   std::vector<double> x, y;
@@ -1465,35 +1476,6 @@ TGraph RTLcurve::as() const {
   gr.SetTitle("Astrometric shift");
   return gr;
 };
-
-TGraph RTLcurve::as2() const {
-  std::vector<double> x, y;
-  for (auto as : c_lc.as2()) {
-    x.push_back(as.x());
-    y.push_back(as.y());
-  }
-  TGraph gr(x.size(), x.data(), y.data());
-  gr.SetTitle("Astrometric shift");
-  return gr;
-};
-
-// double RTLcYoo_un(double u, double rho) {
-//   double z = u / rho;
-//   double k = std::min(1.0/z, 1.0);
-//   auto b0 = [k](double zz){return 4.0 / M_PI * zz *
-//   ROOT::Math::ellint_2(zz, k);}; auto q = [k](double zz)
-//     {return 1.0 / 3.0 * (7.0 - 8.0 * zz*zz - 4.0 * (1.0 - zz*zz) *
-//         ROOT::Math::ellint_1(zz, k) / ROOT::Math::ellint_2(zz, k));};
-//   auto a = [](double u){return (u*u + 2.0) / (u * sqrt(u*u + 4.0));};
-//   return a(u) * b0(z) * (1.0 + rho*rho/8.0 * q(z));
-// };
-//
-//
-// std::vector<double> RTLcYoo_un(std::vector<double> u, Source<double> src) {
-//   std::vector<double> mag;
-//   for(size_t i=0; i<u.size(); i++) mag.push_back(RTLcYoo_un(u[i],
-//   src.circ().r())); return mag;
-// };
 
 double RTMagMax(double rho) { return sqrt(rho * rho + 4.0) / rho; };
 

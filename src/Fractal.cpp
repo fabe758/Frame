@@ -36,51 +36,31 @@ std::string zmap(Zone zone) {
   return "Zone::out";
 }
 
-/// @brief Return right angle apex
-/// @return V2d<Type> TriL<Type>::right() : right angle apex
 template <typename Type> V2d<Type> TriL<Type>::right() const {
   return this->c_apex[0];
 }
 
-/// @brief Return three apexes
-/// @return std::array<V2d<Type>, 3> TriL<Type>::apex() : apexes
 template <typename Type> std::array<V2d<Type>, 3> TriL<Type>::apex() const {
   return this->c_apex;
 }
 
-/// @brief Return length of the short segment
-/// @return Type TriL<Type>::d() : alength of the short segment
 template <typename Type> Type TriL<Type>::d() const {
   return this->sides()[0].length();
 }
 
-/// @brief Return if the triangle is too large compared to the circle or not
-/// @param  cl : the circle to compare
-/// @param  &drl :  the mergin factor
-/// @return bool TriL<Type>::too_large() : the triangle is too large compared to
-/// the circle or not
 template <typename Type>
 bool TriL<Type>::too_large(Circle<Type> cl, Type &drl) const {
   return this->d() > (cl.r() * drl);
 }
 
-/// @brief Return area of the triangle
-/// @return Type TriL<Type>::area() : area of the triangle
 template <class Type> Type TriL<Type>::area() const {
   return 0.5 * (this->c_apex[1] - this->c_apex[0]).n2();
 }
 
-/// @brief Return zone of the triangle
-/// @param cl : the circle to compare
-/// @return Zone TriL<Type>::zone() :  zone in the circle
 template <class Type> Zone TriL<Type>::zone(Circle<Type> cl) const {
   return this->zone(cl, 0.2);
 }
 
-/// @brief Return zone of the triangle  (mergin : mrg)
-/// @param cl : the circle to compare
-/// @param mrg : the mergin to judge
-/// @return Zone TriL<Type>::zone() :  zone in the circle (mergin : mrg)
 template <class Type> Zone TriL<Type>::zone(Circle<Type> cl, Type mrg) const {
   Type rmrg = (this->c_apex[0] - this->c_apex[1]).norm() * mrg;
   auto cns = this->c_apex;
@@ -110,9 +90,6 @@ Zone TriL<Type>::zone(Ellipse<Type> el, Type mrg) const {
   return eqvtril.zone(circ, mrg);
 }
 
-/// @brief Return if the triangle on the border on the circle or not
-/// @param[in] cl : the circle to compare
-/// @return Zone bool TriL<Type>::border() : on the border (true) or not (false)
 template <class Type> bool TriL<Type>::border(Circle<Type> cl) const {
   auto cns = this->c_apex;
   V2d<Type> maxap =
@@ -130,10 +107,6 @@ template <class Type> bool TriL<Type>::border(Circle<Type> cl) const {
   return false;
 }
 
-/// @brief Return if the triangle is adjoint to another one (tril) or not
-/// @param[in] tril : another triangle to compare
-/// @return Zone bbool TriL<Type>::adjoin() : adjoin with tril (true) or not
-/// (false)
 template <class Type> bool TriL<Type>::adjoin(TriL<Type> tril) const {
   auto cns0 = this->c_apex;
   auto cns1 = tril.apex();
@@ -156,56 +129,28 @@ template <class Type> bool TriL<Type>::adjoin(TriL<Type> tril) const {
   return false;
 }
 
-/// @brief Split this triangle to self similar two triangles
-/// @return std::array<TriL<Type>, 2> TriL<Type>::split() : self similar
-/// triangles
 template <class Type> std::array<TriL<Type>, 2> TriL<Type>::split() const {
   auto cns = this->c_apex;
   return {TriL((cns[1] + cns[2]) * 0.5, cns[2]),
           TriL((cns[1] + cns[2]) * 0.5, cns[0])};
 }
 
-/**
- * @brief returns converted angle to TriL<float> (32-bit floating point)
- * @return TriL<float> : converted angle to TriL<float>
- *
- */
 template <class Type> TriL<float> TriL<Type>::to_f() const {
   return TriL<float>(this->c_apex[0].to_f(), this->c_apex[1].to_f());
 }
 
-/**
- * @brief returns converted angle to TriL<double> (64-bit floating point)
- * @return TriL<double> : converted angle to TriL<double>
- *
- */
 template <class Type> TriL<double> TriL<Type>::to_d() const {
   return TriL<double>(this->c_apex[0].to_d(), this->c_apex[1].to_d());
 }
 
-/**
- * @brief returns converted angle to TriL<long double> (128-bit floating point)
- * @return TriL<long double> : converted angle to TriL<long double>
- *
- */
 template <class Type> TriL<long double> TriL<Type>::to_l() const {
   return TriL<long double>(this->c_apex[0].to_l(), this->c_apex[1].to_l());
 }
 
-/**
- * @brief returns three apexes
- * @return std::array<V2d<Type>, 3> TriS<Type>::apex() : three apexes
- *
- */
 template <class Type> std::array<V2d<Type>, 3> TriS<Type>::apex() const {
   return this->c_apex;
 }
 
-/**
- * @brief returns maximum length side
- * @return Type TriS<Type>::maxd() : maximum length side
- *
- */
 template <typename Type> Type TriS<Type>::maxd() const {
   auto sds = this->sides();
   return std::max_element(
@@ -214,24 +159,10 @@ template <typename Type> Type TriS<Type>::maxd() const {
       ->length();
 }
 
-/**
- * @brief Return Zone of the triangle in the circle
- * @param[in]  cl : the circle
- * @return Zone TriS<Type>::zone(Circle<Type> cl) : zone of the triangle
- *
- */
 template <class Type> Zone TriS<Type>::zone(Circle<Type> cl) const {
   return this->zone(cl, 0.2);
 }
 
-/**
- * @brief Return Zone of the triangle in the circle
- * @param[in] cl : the circle
- * @param[in] mrg : the mergin for the swell
- * @return Zone TriS<Type>::zone(Circle<Type> cl, Type mrg) : zone of the
- * triangle
- *
- */
 template <class Type> Zone TriS<Type>::zone(Circle<Type> cl, Type mrg) const {
   Type rmrg = (this->c_apex[0] - this->c_apex[1]).norm() * mrg;
   auto cns = this->c_apex;
@@ -255,25 +186,10 @@ template <class Type> Zone TriS<Type>::zone(Circle<Type> cl, Type mrg) const {
   return Zone::uncertain;
 }
 
-/**
- * @brief Return Zone of the triangle in the circle
- * @param[in]  el : the ellipse
- * @return Zone TriS<Type>::zone(Circle<Type> cl, Type mrg) : zone of the
- * triangle
- *
- */
 template <class Type> Zone TriS<Type>::zone(Ellipse<Type> el) const {
   return this->zone(el, 0.2);
 }
 
-/**
- * @brief Return Zone of the triangle in the circle
- * @param[in] el : the ellipse
- * @param[in] mrg : the mergin for the swell
- * @return Zone TriS<Type>::zone(Ellipse<Type> el, Type mrg) : zone of the
- * triangle
- *
- */
 template <class Type> Zone TriS<Type>::zone(Ellipse<Type> el, Type mrg) const {
   TriS<Type> tris({el.eqvCirc01(this->apex()[0]), el.eqvCirc01(this->apex()[1]),
                    el.eqvCirc01(this->apex()[2])});
@@ -281,13 +197,6 @@ template <class Type> Zone TriS<Type>::zone(Ellipse<Type> el, Type mrg) const {
   return tris.zone(circ, mrg);
 }
 
-/**
- * @brief Return if the triangle is on the border of the circle or not
- * @param[in] cl : the circle
- * @return bool TriS<Type>::border() : the triangle is on the border (true) or
- * not (false)
- *
- */
 template <class Type> bool TriS<Type>::border(Circle<Type> cl) const {
   auto cns = this->c_apex;
   V2d<Type> maxap =
@@ -305,13 +214,6 @@ template <class Type> bool TriS<Type>::border(Circle<Type> cl) const {
   return false;
 }
 
-/**
- * @brief Return if the triangle is on the border of the ellipse or not
- * @param[in] el : the ellipse
- * @return bool TriS<Type>::border() : the triangle is on the border (true) or
- * not (false)
- *
- */
 template <class Type> bool TriS<Type>::border(Ellipse<Type> el) const {
   TriS<Type> tris({el.eqvCirc01(this->apex()[0]), el.eqvCirc01(this->apex()[1]),
                    el.eqvCirc01(this->apex()[2])});
@@ -319,24 +221,12 @@ template <class Type> bool TriS<Type>::border(Ellipse<Type> el) const {
   return tris.border(circ);
 }
 
-/**
- * @brief Return the surface brightnesses on the each apexes
- * @param[in] src : the source
- * @return std::vector<Type> TriS<Type>::sb() : the surface brightnesses
- *
- */
 template <typename Type>
 std::vector<Type> TriS<Type>::sb(Source<Type> src) const {
   return {src.sb(this->c_apex[0]), src.sb(this->c_apex[1]),
           src.sb(this->c_apex[2])};
 }
 
-/**
- * @brief Return the brightnesses of the triangle
- * @param[in] src : the source
- * @return Brightness<Type> TriS<Type>::brightness() : total brightness
- *
- */
 template <typename Type>
 Brightness<Type> TriS<Type>::brightness(Source<Type> src) const {
   Type mean = this->area() *
@@ -349,44 +239,22 @@ Brightness<Type> TriS<Type>::brightness(Source<Type> src) const {
   return {mean, std::sqrt(sqs - mean * mean)};
 }
 
-/**
- * @brief Return the splitted triangles
- * @param[in] right : the mapped right angle corner from lens plane to source
- * plane
- * @return std::array<TriS<Type>, 2> TriS<Type>::split() : splitted triangles
- *
- */
 template <class Type>
 std::array<TriS<Type>, 2> TriS<Type>::split(V2d<Type> right) const {
   return {TriS<Type>({right, this->c_apex[2], this->c_apex[0]}),
           TriS<Type>({right, this->c_apex[0], this->c_apex[1]})};
 }
 
-/**
- * @brief returns converted angle to TriS<float> (32-bit floating point)
- * @return TriS<float> : converted angle to TriS<float>
- *
- */
 template <class Type> TriS<float> TriS<Type>::to_f() const {
   auto aps = this->apex();
   return TriS<float>({aps[0].to_f(), aps[1].to_f(), aps[2].to_f()});
 }
 
-/**
- * @brief returns converted angle to TriS<double> (64-bit floating point)
- * @return TriS<double> : converted angle to TriS<double>
- *
- */
 template <class Type> TriS<double> TriS<Type>::to_d() const {
   auto aps = this->apex();
   return TriS<double>({aps[0].to_d(), aps[1].to_d(), aps[2].to_d()});
 }
 
-/**
- * @brief returns converted angle to TriS<long double> (128-bit floating point)
- * @return TriS<long double> : converted angle to TriS<long double>
- *
- */
 template <class Type> TriS<long double> TriS<Type>::to_l() const {
   auto aps = this->apex();
   return TriS<long double>({aps[0].to_l(), aps[1].to_l(), aps[2].to_l()});
@@ -1885,9 +1753,11 @@ template <class Type> void FrTri<Type>::print() const {
 // template class FrQuad<float>;
 
 template class TriL<float>;
+template struct Brightness<float>;
 template class TriS<float>;
 template class TriMap<float>;
 template class TMQue<float>;
+template struct FrParam<float>;
 template class Snap<float>;
 template class FrTri<float>;
 
@@ -1905,9 +1775,11 @@ template Square<float> include_all(Mlens<float> ml, Source<float> src);
 // template class FrQuad<double>;
 
 template class TriL<double>;
+template struct Brightness<double>;
 template class TriS<double>;
 template class TriMap<double>;
 template class TMQue<double>;
+template struct FrParam<double>;
 template class Snap<double>;
 template class FrTri<double>;
 
@@ -1924,9 +1796,11 @@ template Square<double> include_all(Mlens<double> ml, Source<double> src);
 // template class FrQuad<long double>;
 
 template class TriL<long double>;
+template struct Brightness<long double>;
 template class TriS<long double>;
 template class TriMap<long double>;
 template class TMQue<long double>;
+template struct FrParam<long double>;
 template class Snap<long double>;
 template class FrTri<long double>;
 

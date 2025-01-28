@@ -46,19 +46,60 @@ public:
   TriL(V2d<Type> apex0, V2d<Type> apex1)
       : Triangle<Type>(
             {apex0, apex1, apex0 + ((apex1 - apex0) ^ (0.5 * M_PI))}) {};
+  /// @brief Return right angle apex
+  /// @return V2d<Type> TriL<Type>::right() : right angle apex
   V2d<Type> right() const;
+  /// @brief Return three apexes
+  /// @return std::array<V2d<Type>, 3> TriL<Type>::apex() : apexes
   std::array<V2d<Type>, 3> apex() const;
+  /// @brief Return length of the short segment
+  /// @return Type TriL<Type>::d() : alength of the short segment
   Type d() const;
+  /// @brief Return if the triangle is too large compared to the circle or not
+  /// @param[in]  cl : the circle to compare
+  /// @param[in]  &drl :  the mergin factor
+  /// @return bool TriL<Type>::too_large() : the triangle is too large compared
+  /// to the circle or not
   bool too_large(Circle<Type> cl, Type &drl) const;
+  /// @brief Return area of the triangle
+  /// @return Type TriL<Type>::area() : area of the triangle
   Type area() const;
+  /// @brief Return zone of the triangle
+  /// @param[in] cl : the circle to compare
+  /// @return Zone TriL<Type>::zone() :  zone in the circle
   Zone zone(Circle<Type> cl) const;
+  /// @brief Return zone of the triangle  (mergin : mrg)
+  /// @param[in] cl : the circle to compare
+  /// @param[in] mrg : the mergin to judge
+  /// @return Zone TriL<Type>::zone() :  zone in the circle (mergin : mrg)
   Zone zone(Circle<Type> cl, Type mrg) const;
+  /// @brief Return zone of the triangle  (mergin : mrg)
+  /// @param[in] el : the ellipse to compare
+  /// @param[in] mrg : the mergin to judge
+  /// @return Zone TriL<Type>::zone() :  zone in the circle (mergin : mrg)
   Zone zone(Ellipse<Type> el, Type mrg) const;
+  /// @brief Return if the triangle on the border on the circle or not
+  /// @param[in] cl : the circle to compare
+  /// @return bool TriL<Type>::border() : on the border (true) or not (false)
   bool border(Circle<Type> cl) const;
+  /// @brief Return if the triangle is adjoint to another one (tril) or not
+  /// @param[in] tril : another triangle to compare
+  /// @return bool TriL<Type>::adjoin() : adjoin with tril (true) or not
+  /// (false)
   bool adjoin(TriL<Type> tril) const;
+  /// @brief Split this triangle to self similar two triangles
+  /// @return std::array<TriL<Type>, 2> TriL<Type>::split() : self similar
+  /// triangles
   std::array<TriL<Type>, 2> split() const;
+  /// @brief returns converted angle to TriL<float> (32-bit floating point)
+  /// @return TriL<float> : converted angle to TriL<float>
   TriL<float> to_f() const;
+  /// @brief returns converted angle to TriL<double> (64-bit floating point)
+  /// @return TriL<double> : converted angle to TriL<double>
   TriL<double> to_d() const;
+  /// @brief returns converted angle to TriL<long double> (128-bit floating
+  /// point)
+  /// @return TriL<long double> : converted angle to TriL<long double>
   TriL<long double> to_l() const;
 };
 
@@ -97,20 +138,60 @@ public:
   /// @brief Constructor from all apexes
   /// @param[in] aps : all apexes
   TriS(std::array<V2d<Type>, 3> aps) : Triangle<Type>(aps) {};
+  /// @brief Returns apexes
+  /// @return std::array<V2d<Type>, 3> apex() : apex array
   std::array<V2d<Type>, 3> apex() const;
+  /// @brief Retuens length of maximum side
+  /// @return Type maxd() : length of maximum side
   Type maxd() const;
-  // Zone zone(Circle<Type> cl, Type mrg, Type mxdr) const;
+  /// @brief Returns Zone relative to the circle
+  /// @param[in] cl : Circle
+  /// @return Zone zone(Circle<Type> cl) : Zone
   Zone zone(Circle<Type> cl) const;
+  /// @brief Returns Zone relative to the circle with a margin
+  /// @param[in] cl : Circle
+  /// @param[in] mrg : margin
+  /// @return Zone zone() : Zone
   Zone zone(Circle<Type> cl, Type mrg) const;
-  Zone zone(Ellipse<Type> cl) const;
-  Zone zone(Ellipse<Type> cl, Type mrg) const;
+  /// @brief Returns Zone relative to the ellipse
+  /// @param[in] el : ellipse
+  /// @return Zone zone(Ellipse<Type> el) : Zone
+  Zone zone(Ellipse<Type> el) const;
+  /// @brief Returns Zone relative to the ellipse with a margin
+  /// @param[in] el : ellipse
+  /// @param[in] mrg : margin
+  /// @return Zone zone() : Zone
+  Zone zone(Ellipse<Type> el, Type mrg) const;
+  /// @brief Returns whether the triangle is on border of the circle or not
+  /// @param cl : circle
+  /// @return bool border() : true if on border
   bool border(Circle<Type> cl) const;
+  /// @brief Returns whether the triangle is on border of the ellipse or not
+  /// @param el : ellipse
+  /// @return bool border() : true if on border
   bool border(Ellipse<Type> el) const;
+  /// @brief Return the surface brightnesses on the each apexes
+  /// @param[in] src : the source
+  /// @return std::vector<Type> TriS<Type>::sb() : the surface brightnesses
   std::vector<Type> sb(Source<Type> src) const;
+  /// @brief Returns the brightnesses of the triangle
+  /// @param[in] src : the source
+  /// @return Brightness<Type> TriS<Type>::brightness() : total brightness of
+  /// the triangle
   Brightness<Type> brightness(Source<Type> src) const;
+  /// @brief Returns the splitted triangles
+  /// @param[in] right : the mapped right angle corner
+  /// @return std::array<TriS<Type>, 2> TriS<Type>::split() : splitted triangles
   std::array<TriS<Type>, 2> split(V2d<Type> right) const;
+  /// @brief returns converted angle to TriS<float> (32-bit floating point)
+  /// @return TriS<float> : converted angle to TriS<float>
   TriS<float> to_f() const;
+  /// @brief returns converted angle to TriS<double> (64-bit floating point)
+  /// @return TriS<double> : converted angle to TriS<double>
   TriS<double> to_d() const;
+  /// @brief returns converted angle to TriS<long double> (128-bit floating
+  /// point)
+  /// @return TriS<long double> : converted angle to TriS<long double>
   TriS<long double> to_l() const;
 };
 
@@ -208,6 +289,7 @@ template <class Type> class TMQue : public std::deque<TriMap<Type>> {
 private:
   /// @brief Queue for grouping
   std::queue<TriMap<Type>> c_tmqp;
+  /// @brief Queues of grou@s
   std::vector<TMQue<Type>> c_grps;
 
 public:
@@ -220,6 +302,7 @@ public:
   /// @return TriMap<Type> &operator[] : The TriMap
   const TriMap<Type> &operator[](size_type i) const;
   /// @brief Constructor to initialize by a TriMap
+  /// @param[in] tm : TriMap to initialize
   TMQue(TriMap<Type> tm) : std::deque<TriMap<Type>>({tm}) {};
   /// @brief Constructor to make from a square and a ml
   /// @param[in] sq : the square on the lens plane
@@ -313,7 +396,9 @@ template <typename Type> struct FrParam {
   Type max_drl = 0.2;
   /// @brief Lower limit of beta for single lens approximation
   Type sla_minbt = 0.8; // Lower limit of beta for SLA
+  /// @brief Factor to identify the triangle is large compared to the source
   Type sla_fact_out = 3.0;
+  /// @brief Factor to identify the source is in the triangle or not
   Type in_fact = 1.2;
   /// @brief A parameter. Currently dummy
   // Type mxdr = M_PI / 2.0;   // Currently dummy
@@ -325,9 +410,14 @@ template <typename Type> struct FrParam {
   // bool acc_out = true;
   /// @brief Initial round number
   int rd_init = 10;
+  /// @brief true if it's a benchmark
   bool bench = false;
+  /// @brief benchmark value : start time in clock
   long begin = 0;
+  /// @brief benchmark value : end time in clock
   long end = 0;
+  /// @brief Returns FrParam<float>
+  /// @return FrParam<float> to_f() : float parameters
   FrParam<float> to_f() const {
     FrParam<float> fparam;
     fparam.mrg_l = static_cast<float>(this->mrg_l);
@@ -346,6 +436,8 @@ template <typename Type> struct FrParam {
     fparam.end = this->end;
     return fparam;
   }
+  /// @brief Returns FrParam<double>
+  /// @return FrParam<double> to_d() : double parameters
   FrParam<double> to_d() const {
     FrParam<double> dparam;
     dparam.mrg_l = static_cast<double>(this->mrg_l);
@@ -362,6 +454,8 @@ template <typename Type> struct FrParam {
     dparam.bench = this->bench;
     return dparam;
   }
+  /// @brief Returns FrParam<long double>
+  /// @return FrParam<long double> to_l() : long double parameters
   FrParam<long double> to_l() const {
     FrParam<long double> lparam;
     lparam.mrg_l = static_cast<long double>(this->mrg_l);
@@ -657,6 +751,8 @@ public:
   /// @brief Reurn number of round
   /// @return Number of round
   int round() const;
+  /// @brief Returns short side length of tril
+  /// @return Type d() : length of short side of tril
   Type d() const;
   /// @brief Reurn "in" queue
   /// @return TMQue<Type> in() :  "in" queue
@@ -757,19 +853,27 @@ public:
   /// @param[in] &ml : lens system
   /// @param[in] &src : source
   void process(Type prec, Mlens<Type> &ml, Source<Type> &src);
+  /// @brief Returns benchmark result
+  /// @return Type ctime() : CPU time
   Type ctime() const {
     return static_cast<Type>(c_param.end - c_param.begin) / CLOCKS_PER_SEC;
   }
   /// @brief Clear queues
   void clear();
+  /// @brief Returns converted FrTri<float>
+  /// @return to_f() : converted FrTri<float>
   FrTri<float> to_f() const {
     return FrTri<float>(this->ml().to_f(), this->src().to_f(),
                         this->param().to_f());
   }
+  /// @brief Returns converted FrTri<double>
+  /// @return to_d() : converted FrTri<double>
   FrTri<double> to_d() const {
     return FrTri<double>(this->ml().to_d(), this->src().to_d(),
                          this->param().to_d());
   }
+  /// @brief Returns converted FrTri<long double>
+  /// @return to_l() : converted FrTri<long double>
   FrTri<long double> to_l() const {
     return FrTri<long double>(this->ml().to_l(), this->src().to_l(),
                               this->param().to_l());
@@ -938,9 +1042,11 @@ public:
 // extern template class FrQuad<float>;
 
 extern template class TriL<float>;
+extern template struct Brightness<float>;
 extern template class TriS<float>;
 extern template class TriMap<float>;
 extern template class TMQue<float>;
+extern template struct FrParam<float>;
 extern template class Snap<float>;
 extern template class FrTri<float>;
 
@@ -971,9 +1077,11 @@ using fFrTri = FrTri<float>;
 // extern template class FrQuad<double>;
 
 extern template class TriL<double>;
+extern template struct Brightness<double>;
 extern template class TriS<double>;
 extern template class TriMap<double>;
 extern template class TMQue<double>;
+extern template struct FrParam<double>;
 extern template class Snap<double>;
 extern template class FrTri<double>;
 
@@ -1004,9 +1112,11 @@ using dFrTri = FrTri<double>;
 // extern template class FrQuad<long double>;
 
 extern template class TriL<long double>;
+extern template struct Brightness<long double>;
 extern template class TriS<long double>;
 extern template class TriMap<long double>;
 extern template class TMQue<long double>;
+extern template struct FrParam<long double>;
 extern template class Snap<long double>;
 extern template class FrTri<long double>;
 

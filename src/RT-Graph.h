@@ -455,7 +455,7 @@ public:
   TMQue<double> ccca(std::vector<RTCC_Sel> sel) const;
   /// @brief Return Tgraphs of critical curves and caustics
   /// @param[in] sel : selection parameters
-  /// @return RTCCCA grccca(std::vector<RTCC_Sel> sel) : TMQue<double>
+  /// @return RTCCCA ccca(std::vector<RTCC_Sel> sel) : TMQue<double>
   /// corresponding to critical curves
   RTCCCA grccca(std::vector<RTCC_Sel> sel) const;
   std::vector<RTCC_Sel2> sel2() const;
@@ -489,6 +489,7 @@ class RTSource {
 private:
   /// @brief Source parameters
   Source<double> c_src;
+  /// @brief RTSource parameters
   RTSourceParam c_param;
 
 public:
@@ -528,12 +529,21 @@ public:
 
 class RTSrcMotion {
 private:
+  /// @brief SrcMotion
   SrcMotion<double> c_smot;
 
 public:
+  /// @brief Constructor for RTSrcMotion
+  /// @param[in] smot : SrcMotion
   RTSrcMotion(SrcMotion<double> smot) : c_smot(smot) {};
+  /// @brief  Returns Tmaker of source
+  /// @param[i] t : time
   TMarker marker(Time<double> t) const;
+  /// @brief Returns Tgraph for source trajectory
+  /// @param[in] t : a series of time
   TGraph graph(std::vector<Time<double>> t) const;
+  /// @brief Returns a series of markers
+  /// @param[in] t : a series of time
   std::vector<TMarker> markers(std::vector<Time<double>> t) const;
 };
 
@@ -1002,46 +1012,55 @@ public:
   /// @brief Return critical curves and caustics at time t
   /// @param t : time
   /// @param[in] sel : selection parameters
-  /// @return RTCCCA grccca() : graphs of critical curve
+  /// @return RTCCCA ccca() : graphs of critical curve
   /// curves and causitics
-  RTCCCA grccca(Time<double> t, std::vector<RTCC_Sel> sel) const;
+  RTCCCA ccca(Time<double> t, std::vector<RTCC_Sel> sel) const;
   /// @brief Return critical curves and caustics at time t[0]
   /// @param[in] sel : selection parameters
-  /// @return RTCCCA grccca() : graphs of critical curve
+  /// @return RTCCCA ccca() : graphs of critical curve
   /// curves and causitics
-  RTCCCA grccca(std::vector<RTCC_Sel> sel) const;
-  RTCCCA grccca2() const;
+  RTCCCA ccca(std::vector<RTCC_Sel> sel) const;
+  RTCCCA ccca() const;
   /// @brief Return trajectories of lenese
   /// @return std::vector<TGraph> lenstrj() : trajectories
   std::vector<TGraph> lenstrj() const;
   /// @brief Return magnification graph array
   /// @return std::vector<TGraph> mag() : array of magnification graphs
   std::vector<TGraph> mags() const;
-  std::vector<TGraph> mags2() const;
+  // std::vector<TGraph> mags2() const;
   /// @brief Return magnification graph for first source
   /// @return TGraph mag() : magnification graph
   TGraph mag() const;
-  TGraph mag2() const;
+  // TGraph mag() const;
   /// @brief Retuen graph of astrometric shift
   /// @return TGraph as() : astrometric shift
   TGraph as() const;
-  TGraph as2() const;
+  // TGraph as() const;
 };
 
-// double RTLcYoo_un(double u, double rho);
-//
-// std::vector<double> RTLcYoo_un(std::vector<double> u, Source<double> src);
-
+/// brief Returns maximum magnification of the single lens event
+/// @param[in] rho : source radius
 double RTMagMax(double rho);
 
+/// brief Returns maximum magnification of the single lens event
+/// @param[in] src : source
 double RTMagMax(Source<double> src);
 
+/**
+ * class RTLoop
+ * @brief class to calculate area of loop
+ *
+ */
 class RTLoop {
 private:
   std::vector<V2d<double>> c_loop;
 
 public:
+  /// @brief Constructor
+  /// @param[in] loop : a loop
   RTLoop(std::vector<V2d<double>> loop) : c_loop(loop) {};
+  /// @brief Returns area of the loop
+  /// @return double : integrated area
   double area_tzx() const;
 };
 
