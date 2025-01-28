@@ -42,6 +42,7 @@ root> lc41_01.process_while(1000) <br>
 root> RTLcurve rtlc(lc41_01) <br>
 root> auto mag = rtlc.mag() <br>
 root> mag.Draw() <br>
+etc.
 
 
 
