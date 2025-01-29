@@ -240,7 +240,7 @@ public:
   FrTri<Type> frtri(Time<Type> t) const;
   /// @brief Clculate
   /// @param[in] round : number of round of calculation
-  // void process(int round);
+  void process(int round);
   /// @brief Process divide/select while size of in queue < in_size
   /// @param[in] in_size : size of "in" queue to stop
   void process_while(int in_size);

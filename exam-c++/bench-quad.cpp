@@ -54,10 +54,12 @@ int main(int argc, char *argv[]) {
   // lc.process(15);
   // flc.process(15);
   // llc.process(15);
+  int round = 15;
+  // int round = 22;
 
-  lc.process(22);
-  flc.process(22);
-  llc.process(22);
+  lc.process(round);
+  flc.process(round);
+  llc.process(round);
 
   // lc.process(25);
   // flc.process(25);
