@@ -17,6 +17,7 @@ src         : Source directory of libraries
 glib        : Library directory
 exam-root   : Example directory for ROOT
 test-python : test directory for python
+docs        : Documents
 
 # To make glib
 $ cd src <br>
@@ -44,7 +45,10 @@ root> auto mag = rtlc.mag() <br>
 root> mag.Draw() <br>
 etc.
 
-
+# To make documents
+Need Doxygen (https://doxygen.nl/index.html) <br>
+$ cd docs <br>
+$ doxygen <br>
 
 
 
