@@ -45,6 +45,13 @@ root> auto mag = rtlc.mag() <br>
 root> mag.Draw() <br>
 etc.
 
+# To run python example
+$ cd exam-python <br>
+$ python <br>
+python> from Exam import * <br>
+python> mag.Draw() <br>
+etc.
+
 # To make documents
 Need Doxygen (https://doxygen.nl/index.html) <br>
 $ cd docs <br>
