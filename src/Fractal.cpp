@@ -180,7 +180,7 @@ template <class Type> Zone TriS<Type>::zone(Circle<Type> cl, Type mrg) const {
         return a.distance(cl.cent()) < b.distance(cl.cent());
       })).closest(cl.cent());
   Type mind = (minap - cl.cent()).norm();
-  if ((mind - cl.r()) > rmrg)
+  if ((mind - cl.r()) > rmrg && !this->in(cl.cent())) // Modified in 20250518
     return Zone::out;
 
   return Zone::uncertain;

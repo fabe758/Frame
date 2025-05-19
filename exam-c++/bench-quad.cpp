@@ -40,9 +40,11 @@ int main(int argc, char *argv[]) {
   par10.rd_init = 10;
 
   dSrcMotion sm(src, ln);
-  // dSrcMotion sm(src001, ln);
   fSrcMotion fsm(src.to_f(), ln.to_f());
   lSrcMotion lsm(src.to_l(), ln.to_l());
+  // dSrcMotion sm(src001, ln);
+  // fSrcMotion fsm(src001.to_f(), ln.to_f());
+  // lSrcMotion lsm(src001.to_l(), ln.to_l());
 
   dLcurve lc({sm}, ml, t, par10);
   lc.set_bench(true);

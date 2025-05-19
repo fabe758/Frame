@@ -210,8 +210,8 @@ private:
 public:
   /// @brief Blank constructor : (0.0, 0.1) at t0 = 0.0, v = (0.1, 0.0)
   Linear()
-      : c_p0(V2d<Type>(0.0, 0.1)), c_t0(Time<Type>(0.0)),
-        c_v(V2d<Type>(0.1, 0.0)) {};
+      : c_p0(V2d<Type>(0.0, 0.0)), c_t0(Time<Type>(0.0)),
+        c_v(V2d<Type>(0.0, 0.0)) {};
   /// @brief Constructor
   /// @param[in] p0 : position at origin
   /// @param[in] t0 : time of origin
@@ -1037,7 +1037,7 @@ private:
 public:
   /// @brief Constructor with src
   /// @param[in] src : source parameters
-  SrcMotion(Source<Type> src) : c_src(src) {};
+  SrcMotion(Source<Type> src) : c_src(src) {}
   /// @brief Constructor with src and l (linear motion)
   /// @param[in] src : source parameters
   /// @param[in] l : parameters of linear motion
@@ -1056,7 +1056,10 @@ public:
   /// @return Source<Type> src(Time<Type> t) : source parameters at the time t
   Source<Type> src(Time<Type> t) const {
     Source<Type> src = this->src();
-    src.move_to(c_f(t));
+    try {
+      src.move_to(c_f(t));
+    } catch (std::bad_function_call) {
+    }
     return src;
   }
   std::function<V2d<Type>(Time<Type>)> f() const { return c_f; }
@@ -1083,14 +1086,14 @@ public:
   Type u(Time<Type> t) const;
   /// @brief Return the series of 2d positions of the source
   /// @param[in] t : a series of the time
-  /// @return std::vector<V2d<Type>> p(std::vector<Time<Type>> t) : a series of
-  /// the 2d positions of the source
+  /// @return std::vector<V2d<Type>> p(std::vector<Time<Type>> t) : a series
+  /// of the 2d positions of the source
   std::vector<V2d<Type>> p(std::vector<Time<Type>> t) const;
   /// @brief Return the series of distances from the position p0
   /// @param[in] t : a series of the time
   /// @param[in] p0 : a position
-  /// @return std::vector<Type> u(std::vector<Time<Type>> t, V2d<Type> p0) : the
-  /// series of distances
+  /// @return std::vector<Type> u(std::vector<Time<Type>> t, V2d<Type> p0) :
+  /// the series of distances
   std::vector<Type> u(std::vector<Time<Type>> t, V2d<Type> p0) const;
   /// @brief Return the series of distances from the origin
   /// @param[in] t : a series of the time
@@ -1131,8 +1134,7 @@ public:
   /// @brief Blank constructor
   LensMotion() {};
   /// @brief Construcyor with a lens
-  LensMotion(Lens<Type> l)
-      : c_l(l), c_f([l](Time<Type> t) { return l.p(); }) {};
+  LensMotion(Lens<Type> l) : c_l(l) {};
   /// @brief Constructor with l and f
   LensMotion(Lens<Type> l, std::function<V2d<Type>(Time<Type>)> f)
       : c_l(l), c_f(f) {};
@@ -1140,7 +1142,13 @@ public:
   /// @brief Return the lens position at time t
   /// @param[in] t : the time
   /// @return V2d<Type> p(Time<Type> t) : 2d position of the lens at t
-  V2d<Type> p(Time<Type> t) const { return c_f(t); };
+  V2d<Type> p(Time<Type> t) const {
+    try {
+      return c_f(t);
+    } catch (std::bad_function_call) {
+      return c_l.p();
+    }
+  };
   /// @brief Return lens parameters
   /// @return Lens<Type> l() : lens parameters
   Lens<Type> l() const { return c_l; };
@@ -1149,13 +1157,16 @@ public:
   /// @return Lens<Type> l(Time<Type> t) : lens parameters at t
   Lens<Type> l(Time<Type> t) const {
     Lens<Type> l = c_l;
-    l.move_to(c_f(t));
+    try {
+      l.move_to(c_f(t));
+    } catch (std::bad_function_call) {
+    }
     return l;
   };
   /// @brief Return the series of lens parameters at a series of time t
   /// @param[in] t : a series of time
-  /// @return std::vector<Lens<Type>> l(std::vector<Time<Type>> t) : a series of
-  /// lens parameters at t
+  /// @return std::vector<Lens<Type>> l(std::vector<Time<Type>> t) : a series
+  /// of lens parameters at t
   std::vector<Lens<Type>> l(std::vector<Time<Type>> t) const;
   /// @brief Convert to double (32-bit floating point)
   /// @return LensMotion<double> to_f() : converted class to float
@@ -1223,7 +1234,8 @@ public:
   }
   /// @return the multiple lens parameters at time t
   /// @param[in] t : the time
-  /// @return Mlens<Type> ml(Time<Type> t) : multiple lens parameters at time t
+  /// @return Mlens<Type> ml(Time<Type> t) : multiple lens parameters at time
+  /// t
   Mlens<Type> ml(Time<Type> t) const {
     Mlens<Type> ml;
     for (size_t i = 0; i < this->size(); i++)
